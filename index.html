@@ -16,9 +16,9 @@
     <section class="img-filters  img-filters--inactive  container">
       <h2 class="img-filters__title  visually-hidden">Фильтр фотографий</h2>
       <form class="img-filters__form" action="index.html" method="get" autocomplete="off">
-        <button type=button class="img-filters__button  img-filters__button--active" id="filter-default">По умолчанию</button>
-        <button type=button class="img-filters__button" id="filter-random">Случайные</button>
-        <button type=button class="img-filters__button" id="filter-discussed">Обсуждаемые</button>
+        <button type=button class="img-filters__button  img-filters__button--active" id="filter-default" data-filter="default">По умолчанию</button>
+        <button type=button class="img-filters__button" id="filter-random" data-filter="random">Случайные</button>
+        <button type=button class="img-filters__button" id="filter-discussed" data-filter="discussed">Обсуждаемые</button>
       </form>
     </section>
 
@@ -157,7 +157,7 @@
           </div>
 
           <!-- Комментарии к изображению -->
-          <div class="social__comment-count"><span data-comment>5</span> из</span> <span class="comments-count">125</span> комментариев</div>
+          <div class="social__comment-count"><span data-comment> </span> из</span> <span class="comments-count">125</span> комментариев</div>
           <ul class="social__comments">
             <li class="social__comment">
               <img

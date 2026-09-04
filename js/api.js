@@ -1,6 +1,6 @@
 import { showAlert } from './utils.js';
 
-const GET_LINK = 'https://27.javascript.pages.academy/kekstagram/data';
+const GET_LINK = 'https://27.javascript.htmlacademy.pro/kekstagram/data';
 
 const getData = (onSuccess) => {
   fetch(GET_LINK)

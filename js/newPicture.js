@@ -5,8 +5,8 @@ const newPictureLoadButton = pictureForm.querySelector('#upload-file');
 const newPictureForm = pictureForm.querySelector('.img-upload__overlay');
 const picturePreview = pictureForm.querySelector('.img-upload__preview img');
 const newPictureFormClose = pictureForm.querySelector('.img-upload__cancel');
-const commentsFormElement = pictureForm.querySelector('.img-upload__text');
-const hashtagElement = document.querySelector('.text__hashtags');
+// const commentsFormElement = pictureForm.querySelector('.img-upload__text');
+// const hashtagElement = document.querySelector('.text__hashtags');
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -50,28 +50,28 @@ const loadNewPicture = () => {
   });
 };
 
-const pristine = new Pristine(commentsFormElement, {
-  classTo: 'img-upload__field-wrapper',
-  errorClass: 'img-upload__field-wrapper--invalid',
-  successClass: 'img-upload__field-wrapper--valid',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'div',
-  errorTextClass: 'img-upload__field-wrapper'
-}, true);
+// const pristine = new Pristine(commentsFormElement, {
+//   classTo: 'img-upload__field-wrapper',
+//   errorClass: 'img-upload__field-wrapper--invalid',
+//   successClass: 'img-upload__field-wrapper--valid',
+//   errorTextParent: 'img-upload__field-wrapper',
+//   errorTextTag: 'div',
+//   errorTextClass: 'img-upload__field-wrapper'
+// }, true);
 
-const hashtag = /^#[a-za-яё0-9]{1,19}$/i;
+// const hashtag = /^#[a-za-яё0-9]{1,19}$/i;
 
-function validateHashtag () {
-  const hashtagArray = hashtagElement.value.split(' ');
-  for (let i = 0; i < hashtagArray.length; i++) {
-    const isEvery = () => hashtag.test(hashtagArray[i]);
-    console.log(hashtagArray[i])
-    //console.log(hashtag.test(hashtagArray[i]))
-    //console.log(hashtagArray.every(isEvery))
-    return hashtagArray.every(isEvery);
-  }
-}
+// function validateHashtag () {
+//   const hashtagArray = hashtagElement.value.split(' ');
+//   for (let i = 0; i < hashtagArray.length; i++) {
+//     const isEvery = () => hashtag.test(hashtagArray[i]);
+//     console.log(hashtagArray[i])
+//     //console.log(hashtag.test(hashtagArray[i]))
+//     //console.log(hashtagArray.every(isEvery))
+//     return hashtagArray.every(isEvery);
+//   }
+// }
 
-pristine.addValidator(hashtagElement, validateHashtag, 'неверный хэш-тег');
+// pristine.addValidator(hashtagElement, validateHashtag, 'неверный хэш-тег');
 
 export { loadNewPicture };

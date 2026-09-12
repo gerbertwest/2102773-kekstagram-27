@@ -1,4 +1,4 @@
-import { setSliderValue, onEffectUpdate, updateSlider } from './slider.js';
+import { setSliderValue, onEffectUpdate, updateSlider, resetSlider } from './slider.js';
 
 const SCALE_STEP = 25;
 const MIN_SCALE = 25;
@@ -54,42 +54,38 @@ const EFFECTS = {
   },
 };
 
+let currentScale = INITIAL_SCALE;
 let currentEffect = 'none';
 
 const effectElement = document.querySelector('.effect-level__value');
 const sliderElement = document.querySelector('.effect-level');
 const picturePreview = document.querySelector('.img-upload__preview img');
 const effectsList = document.querySelector('.effects__list');
+const scale = document.querySelector('.scale');
+const scaleValue = scale.querySelector('.scale__control--value');
+const smallerButton = scale.querySelector('.scale__control--smaller');
+const biggerButton = scale.querySelector('.scale__control--bigger');
 
-const disable = () => {
-  effectElement.removeEventListener('change', setSliderValue);
+// Кнопки масштаба
+
+const setScale = (value) => {
+  currentScale = value;
+  scaleValue.value = `${currentScale}%`;
+  picturePreview.style.transform = `scale(${currentScale / 100})`;
 };
 
-const enable = () => {
-  effectElement.addEventListener('change', setSliderValue);
+const changeScale = (step) => {
+  const newValue = Math.min(
+    MAX_SCALE,
+    Math.max(MIN_SCALE, currentScale + step)
+  );
+
+  setScale(newValue);
 };
+
+const resetScale = () => setScale(INITIAL_SCALE);
 
 const initScale = () => {
-  const scale = document.querySelector('.scale');
-  const scaleValue = scale.querySelector('.scale__control--value');
-  const smallerButton = scale.querySelector('.scale__control--smaller');
-  const biggerButton = scale.querySelector('.scale__control--bigger');
-
-  scaleValue.value = `${INITIAL_SCALE}%`;
-  picturePreview.style.transform = `scale(${INITIAL_SCALE / 100})`;
-
-  const changeScale = (step) => {
-    const currentValue = parseInt(scaleValue.value, 10);
-
-    const newValue = Math.min(
-      MAX_SCALE,
-      Math.max(MIN_SCALE, currentValue + step)
-    );
-
-    scaleValue.value = `${newValue}%`;
-    picturePreview.style.transform = `scale(${newValue / 100})`;
-  };
-
   biggerButton.addEventListener('click', () => {
     changeScale(SCALE_STEP);
   });
@@ -97,6 +93,18 @@ const initScale = () => {
   smallerButton.addEventListener('click', () => {
     changeScale(-SCALE_STEP);
   });
+
+  resetScale();
+};
+
+// Эффекты на фото, в том числе слайдер
+
+const disable = () => {
+  effectElement.removeEventListener('change', setSliderValue);
+};
+
+const enable = () => {
+  effectElement.addEventListener('change', setSliderValue);
 };
 
 const onEffectChange = (evt) => {
@@ -117,4 +125,11 @@ onEffectUpdate((value) => {
   picturePreview.style.filter = effect.getFilter(value);
 });
 
-export { disable, enable, initScale };
+const resetEffects = () => {
+  currentEffect = 'none';
+  picturePreview.style.filter = 'none';
+
+  resetSlider();
+};
+
+export { disable, enable, initScale, resetScale, resetEffects };

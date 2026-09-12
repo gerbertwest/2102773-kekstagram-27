@@ -1,4 +1,6 @@
 import { isEscapeKey } from './utils.js';
+import { resetScale } from './editPicture.js';
+import { resetEffects } from './editPicture.js';
 
 const pictureForm = document.querySelector('.img-upload');
 const newPictureLoadButton = pictureForm.querySelector('#upload-file');
@@ -40,13 +42,14 @@ const loadNewPicture = () => {
       picturePreview.src = URL.createObjectURL(file);
     }
     newPictureForm.classList.remove('hidden');
+    resetScale();
+    resetEffects();
 
     document.addEventListener('keydown', onPopupEscKeydown);
 
     newPictureFormClose.addEventListener('click', () => {
       closeNewPictureForm();
     });
-
   });
 };
 

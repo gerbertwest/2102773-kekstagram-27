@@ -1,14 +1,15 @@
 import { isEscapeKey } from './utils.js';
 import { resetScale } from './editPicture.js';
 import { resetEffects } from './editPicture.js';
+import { sendData } from './api.js';
 
-const pictureForm = document.querySelector('.img-upload');
+const pictureForm = document.querySelector('.img-upload__form');
 const newPictureLoadButton = pictureForm.querySelector('#upload-file');
 const newPictureForm = pictureForm.querySelector('.img-upload__overlay');
 const picturePreview = pictureForm.querySelector('.img-upload__preview img');
 const newPictureFormClose = pictureForm.querySelector('.img-upload__cancel');
-// const commentsFormElement = pictureForm.querySelector('.img-upload__text');
-// const hashtagElement = document.querySelector('.text__hashtags');
+const commentsFormElement = pictureForm.querySelector('.img-upload__text');
+const hashtagElement = document.querySelector('.text__hashtags');
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -53,28 +54,44 @@ const loadNewPicture = () => {
   });
 };
 
-// const pristine = new Pristine(commentsFormElement, {
-//   classTo: 'img-upload__field-wrapper',
-//   errorClass: 'img-upload__field-wrapper--invalid',
-//   successClass: 'img-upload__field-wrapper--valid',
-//   errorTextParent: 'img-upload__field-wrapper',
-//   errorTextTag: 'div',
-//   errorTextClass: 'img-upload__field-wrapper'
-// }, true);
+const pristine = new Pristine(commentsFormElement, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--invalid',
+  successClass: 'img-upload__field-wrapper--valid',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'img-upload__field-wrapper'
+}, true);
 
-// const hashtag = /^#[a-za-яё0-9]{1,19}$/i;
+const hashtag = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
-// function validateHashtag () {
-//   const hashtagArray = hashtagElement.value.split(' ');
-//   for (let i = 0; i < hashtagArray.length; i++) {
-//     const isEvery = () => hashtag.test(hashtagArray[i]);
-//     console.log(hashtagArray[i])
-//     //console.log(hashtag.test(hashtagArray[i]))
-//     //console.log(hashtagArray.every(isEvery))
-//     return hashtagArray.every(isEvery);
-//   }
-// }
+function validateHashtag () {
+  const hashtagArray = hashtagElement.value.split(' ');
+  for (let i = 0; i < hashtagArray.length; i++) {
+    const isEvery = () => hashtag.test(hashtagArray[i]);
+    return hashtagArray.every(isEvery);
+  }
+}
 
-// pristine.addValidator(hashtagElement, validateHashtag, 'неверный хэш-тег');
+pristine.addValidator(hashtagElement, validateHashtag, 'неверный хэш-тег');
 
-export { loadNewPicture };
+const submit = (onSuccess) => {
+  pictureForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if(isValid) {
+      sendData(
+        () => {
+          evt.target.reset();
+          onSuccess();
+        },
+        () => {
+          closeNewPictureForm();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+export { loadNewPicture, submit };
